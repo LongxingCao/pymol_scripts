@@ -61,3 +61,8 @@ alias bam, pdbdircyclerlite; set_cycler_command 'stix; show cartoon';
 
 alias bbo, hide all; show sticks, name Ca+C+O+N+CA
 alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, asym and chain A within 10 of (asym and chain B); select interfaceB, asym and chain B within 10 of (asym and chain A); select interfaceAA, not hydro within 3 of interfaceA; select interfaceBB, not hydro within 3 of interfaceB; show lines, interfaceAA; show lines, interfaceBB; select interfaceOri, resi and asym and interfaceAA or asym and interfaceBB; show sticks, interfaceOri; disable interface*; disable *_2_S* or *_3_S* or *_4_S* or or *_5_S*
+
+
+# calculate the phi psi angle of the selected residue.
+alias pp, (phi,psi)=cmd.phi_psi("sele").values()[0]; print "\\n"; print "phi: %s"%(phi); print "psi: %s"%(psi); print "\\n";
+alias seq, one_letter ={'VAL':'V', 'ILE':'I', 'LEU':'L', 'GLU':'E', 'GLN':'Q','ASP':'D', 'ASN':'N', 'HIS':'H', 'TRP':'W', 'PHE':'F', 'TYR':'Y','ARG':'R', 'LYS':'K', 'SER':'S', 'THR':'T', 'MET':'M', 'ALA':'A','GLY':'G', 'PRO':'P', 'CYS':'C'}; pyMOLSeq = []; cmd.iterate("sele and n. CA", "pyMOLSeq.append( one_letter[resn] )"); pyMOLSeq = ''.join( pyMOLSeq ); print "\\nSequence:\\n%s" % (pyMOLSeq)
