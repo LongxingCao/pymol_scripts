@@ -1,0 +1,152 @@
+If you want to gain the people's ovation and fame forever, document your stuff here! 
+List the files you've added and way briefly what kind of stuff is in them and their 
+status (mostly, if they're for public consumption or not).  I'll start:
+
+
+PackingMeasureUtils.py
+
+	contains stuff for viewing "*_packing.pdb" files. Should mostly work, 
+	so use these without fear (be careful what you use as radii though...).
+
+	loadPackingPDB <file> , [<name for object>]
+
+		loads a foo_packing.pdb file and colors it all pretty-like
+		creates two selections along with the loaded object called
+		NAMEcavities and NAMEprotein which are the heteratoms representing
+		holes and everything else, respectively. Names can get pretty long,
+		by pymol lets you do good stuff like "select NA*cav*", which will
+		match a selection called NAMEISREALLYLONGcavities.
+	
+	expandRadii byamount, selection
+	contractRadii byamount, selection
+	These do just what they say. A rebuild is triggered, so they're not instantaneous
+	
+	useOccRadii selection
+	useTempRadii selection
+	will take VDW radii from PDB occ/bfac cols and use them as radii
+	
+	useTempColors selection
+	useOccColors selection
+	Colors by occ/bfac from pdb
+	
+	useRosettaRadii
+	changes standard radii to match rosetta
+	
+
+PDBBrowser.py
+
+	contains some quick and dirty functions for browsing a bunch of PDBs
+	Experimental! My not work right for you.
+	
+	loadFromGlob pattern, name=None, native=None, delete=True, pickrandom=F
+
+		This takes a shell style pattern like ~/mypdbs/foobar_*_packing.pdb and
+		loads one of the files. If the file ends with _packing.pdb[.gz] it uses
+		loadPackingPdb. If pattern is just a directory, it'll browse the .pdb/.pdb.gz
+		files in that dir
+		pickrand = True, it'll pick a random one. 
+		name = optional name for loaded objcet
+		native arg provides a native for reference, although I don't think 
+		does anything as yet.
+	
+	loadPrev / loadNext
+	go back and fourth in the structures you've browsed. this will actually
+	load and delete them, so they don't have to stay in pymol. uses the globals
+	LOADLIST and POINTER.
+	
+	browseReset
+	resets browsing history (LOADLIST and POINTER)
+	
+
+rosetta_tools.py
+
+        This is a PyMOL plugin which can be used to highlight certain features on proteins. 
+        Currently there are two functions implemented: 
+
+        Hydrogen bond visualization
+           This function displays hydrogen bonds to help with evaluating de novo designed
+           structures and designed interfaces. The bonds are created as CGO objects (native
+           to PyMOL) and are colored in gradient from yellow (for good, low-energy hydrogen
+           bonds) to white (weak H-bonds).
+
+        Surface hydrophobic patch visualization
+           This function of the plugin identifies hydrophobic patches on the surface of 
+           all visible objects and colors them.
+
+        The plugin requires the following things:
+        - python, version >= 2.4
+          Note: If you have old versions of python on your machine, make sure PyMOL uses version
+          2.4 or greater. The plugin will NOT work for python v2.3. It may be necessary to
+          reinstall PyMOL or completely remove older version of python to get this to work.
+
+        - The X11 version of PyMOL
+           MAC users: Only the X11 version of PyMOL is capable of running plugins. You will 
+           need to obtain the PyMOLX11Hybrid version of PyMOL from the PyMOL Web site if
+           you are running MacPyMOL.
+
+        Hydrogen bond visualization only:
+        - A compiled copy of Rosetta and the Rosetta database somewhere on your machine.
+
+        Hydrophobic patch visualization only:
+        - A compiled copy of the QUILT patch identification algorithm (available for download 
+          from ftp://ftp.ebi.ac.uk/pub/contrib/lijnzaad/)
+   
+        
+        To install the plugin, follow these instructions:
+        1) Locate the PyMOL plugins folder and create a symbolic link to the file 'rosetta_tools.py'
+        in this folder. The commands for this will look something like below:
+           cd /path/to/pymol/modules/pmg_tk/startup
+           ln -s /path/to/rosetta_tools.py rosetta_tools.py
+   
+        For hydrogen bond visualization:
+        2a) Locate the src/pilot_apps.src.settings.all file in your Rosetta directory and add in 
+            compilation of the executable 'report_hbonds_for_plugin' by adding the following lines:
+
+           "pilot/ronj" : [
+               "report_hbonds_for_plugin",
+           ],
+
+           Then compile it:
+           scons mode=release bin/report_hbonds_for_plugin.{linux|macos}gccrelease
+
+        3) In your HOME directory (check your environment by typing 'env'), create a file named 
+           ".rosettatoolsplugin" and put the following two lines in it:
+   
+           rosetta_executable /path/to/mini/bin/report_hbonds_for_plugin.linuxgccrelease
+           rosetta_database /path/to/minirosetta_database/
+
+           This file is necessary so that the PyMOL plugin knows how to find Rosetta and the database.
+   
+        4) Run PyMOL
+   
+        5) With a structure loaded, click on "Plugins -> Rosetta Tools -> display hydrogen bonds". 
+           Note: PyMOL must be started from the same directory as the loaded PDB file so that the plugin
+           can find it.  Hydrogen bonds across chains only can be drawn using the menu item
+           "Plugins -> Rosetta Tools -> display hydrogen bonds, interface only"
+
+           The bonds are colored by a gradient:
+           Yellow ====> good score
+           White  ====> bad score
+
+           Energies are displayed for bonds across chains.
+
+        For hydrophobic patch visualization:
+        2a) Compile QUILT according to the instruction provided in the README.
+
+        3) In your HOME directory, create or append to a file named ".rosettatoolsplugin" the following
+           line in it:
+   
+           quilt_executable /path/to/quilt/src/quilt
+
+        4) Copy the files 'ATOMS' and 'RESIDUES' distributed with the quilt src to your HOME directory.
+
+           cp /path/to/quilt/ATOMS ~/.atoms
+           cp /path/to/quilt/RESIDUES ~/.residues
+
+        5) Run PyMOL
+
+        6) With a structure loaded, click on "Plugins -> Rosetta Tools -> display hydrophobic patches".
+           The plugin will change the protein to spherical represenation and will color the three largest
+           hydrophobic patches dark green (largest), palegreen, and gray (3rd largest). 
+
+

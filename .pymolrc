@@ -1,0 +1,63 @@
+
+#_ feedback push
+#_ feedback disable,all,everything
+
+#from pymol import cmd
+
+import sys
+
+set cylinder_shader_ff_workaround, 1
+
+
+sys.path.append("/Users/longxing/pymol_scripts/")
+sys.path.append("/Users/longxing/pymol_scripts/scripts")
+
+from scripts import *
+
+###########################################################
+## Custom commands
+set cartoon_flat_sheets, 0
+###########################################################
+
+#run /Users/longxing/pymol_scripts/scripts/all_commands.py
+
+run /Users/longxing/pymol_scripts/scripts/tmalign.py
+
+run /Users/longxing/pymol_scripts/scripts/rawAsBfact.py
+run /Users/longxing/pymol_scripts/scripts/roeAsBfact.py
+
+run /Users/longxing/pymol_scripts/scripts/PDBinfo.py
+
+aaindex.init("/Users/longxing/pymol_scripts/scripts/aaindex")
+
+# END COMMANDS
+_ feedback pop
+
+alias pbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB; util.cnc;
+alias ipbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB and interface; util.cnc;
+
+alias npbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000002; spectrum b, red_green, chainB; util.cnc;
+alias inpbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000002; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias dl, color gray80, chainA; color white, chainB; aaindex2b DVLA000003; spectrum b, green_red, chainB; util.cnc;
+alias idl, color gray80, chainA; color white, chainB; aaindex2b DVLA000003; spectrum b, green_red, chainB and interfaceB; util.cnc;
+
+alias hydro, color gray80, chainA; color white, chainB; aaindex2b NADH010101; spectrum b, green_white_yellow, chainB; util.cnc;
+alias ihydro, color gray80, chainA; color white, chainB; aaindex2b NADH010101; spectrum b, green_white_yellow, chainB and interfaceB; util.cnc;
+
+alias alpha, color gray80, chainA; color white, chainB; aaindex2b CHOP780201; spectrum b, red_green, chainB; util.cnc;
+alias ialpha, color gray80, chainA; color white, chainB; aaindex2b CHOP780201; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias beta, color gray80, chainA; color white, chainB; aaindex2b CHOP780202; spectrum b, red_green, chainB; util.cnc;
+alias ibeta, color gray80, chainA; color white, chainB; aaindex2b CHOP780202; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias stik, hide all; cmd.show("cartoon"); cmd.show("sticks","not hydro");
+alias cbc, hide all; cmd.show("cartoon"); util.cbc;
+alias cnc, hide all; cmd.show("cartoon"); cmd.show("sticks","not hydro"); cmd.util.cbc("all"); cmd.util.cnc("all");
+alias cg, object=cmd.get_names()[0]; cmd.view('v', 'store'); util.protein_vacuum_esp(object, mode=2, quiet=0); cmd.disable(object + "_e_pot"); cmd.enable(object); cmd.view('v', 'recall');
+alias surf, cmd.extract('target', 'chainA'); cmd.view('v', 'store'); util.protein_vacuum_esp('target', mode=2, quiet=0); cmd.disable('target' + "_e_pot"); cmd.enable('target'); cmd.view('v', 'recall'); cmd.zoom('interface'); cmd.create('inter_bawls','interfaceB'); cmd.show('spheres','inter_bawls'); cmd.disable('inter_bawls'); cmd.create('inter_cage',"interfaceB"); cmd.show('mesh','inter_cage'); cmd.color('magenta','inter_cage'); cmd.util.cnc('inter_cage'); cmd.disable('inter_cage');
+
+alias bam, pdbdircyclerlite; set_cycler_command 'stix; show cartoon';
+
+alias bbo, hide all; show sticks, name Ca+C+O+N+CA
+alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, asym and chain A within 10 of (asym and chain B); select interfaceB, asym and chain B within 10 of (asym and chain A); select interfaceAA, not hydro within 3 of interfaceA; select interfaceBB, not hydro within 3 of interfaceB; show lines, interfaceAA; show lines, interfaceBB; select interfaceOri, resi and asym and interfaceAA or asym and interfaceBB; show sticks, interfaceOri; disable interface*; disable *_2_S* or *_3_S* or *_4_S* or or *_5_S*
