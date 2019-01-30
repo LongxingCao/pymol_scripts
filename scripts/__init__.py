@@ -25,6 +25,7 @@ __all__ = [
     "rosetta_vdw",
     "LigandView",
     "CavityView",
+    "FindSeq",
     ]
 
 
