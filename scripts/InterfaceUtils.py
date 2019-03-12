@@ -573,7 +573,7 @@ def stix():
 		if cmd.count_atoms("chain%s"%(letter))>0:
 			interfacename = "interface"+letter
 			cmd.select("not_this_chain", "not hetatm and not symbol w and not %s"%(chainname) )
-			cmd.select(interfacename, "byres %s and (not_this_chain around 4.0)"%(chainname) )
+			cmd.select(interfacename, "byres %s and (not_this_chain around 6.0)"%(chainname) )
 			cmd.select("heavy_%s"%(interfacename), "%s and not apolar_protons"%(interfacename))
 			cmd.select("interface", "interface or %s"%(interfacename) )
 			cmd.select("heavy_interface", "heavy_interface or heavy_%s"%(interfacename) )
