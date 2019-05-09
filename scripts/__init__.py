@@ -25,11 +25,8 @@ __all__ = [
     "rosetta_vdw",
     "LigandView",
     "CavityView",
-<<<<<<< HEAD
     "spectrumbar",
-=======
     "FindSeq",
->>>>>>> 4488df35b574bb605446c63fdd4a0624441efdbd
     ]
 
 
