@@ -72,8 +72,10 @@ class LoadDeleteCycler(object):
         choices = self.choices()
         l = len(choices)
         next_file = 0
+        next_file_index = 0
         for i in range(l):
             if objname(choices[i]) == loaded:
+                next_file_index = (i+by) % l
                 next_file = choices[ (i+by) % l ]
                 break
         cmd.delete('all')
@@ -87,7 +89,9 @@ class LoadDeleteCycler(object):
             logging.debug("onload_command: %s", self.onload_command)
             cmd.do(self.onload_command)
 
-        cmd.replace_wizard('message',next_file)
+        #cmd.replace_wizard('message',next_file)
+        # to display current pdb index, start at 1
+        cmd.replace_wizard('message',next_file + ", %d/%d" % (next_file_index+1,l) ) # +1, so the cycler starts at 1
 
     def choices(self):
         raise NotImplementedError("EnableCycler.choices")

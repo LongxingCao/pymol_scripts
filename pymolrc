@@ -66,3 +66,6 @@ alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, as
 # calculate the phi psi angle of the selected residue.
 alias pp, (phi,psi)=cmd.phi_psi("sele").values()[0];abego = {phi>0 and -100<=psi<100:'G',phi<0 and psi>=100:'E',phi>0 and psi<-100:'E',phi<=0 and -75<=psi<50:'A',phi<=0 and psi<-75:'B',phi<=0 and psi>=50:'B'}[1]; print "\\n"; print "phi: %s"%(phi); print "psi: %s"%(psi); print "AGEGO: %s" % abego; print "\\n";
 alias seq, one_letter ={'VAL':'V', 'ILE':'I', 'LEU':'L', 'GLU':'E', 'GLN':'Q','ASP':'D', 'ASN':'N', 'HIS':'H', 'TRP':'W', 'PHE':'F', 'TYR':'Y','ARG':'R', 'LYS':'K', 'SER':'S', 'THR':'T', 'MET':'M', 'ALA':'A','GLY':'G', 'PRO':'P', 'CYS':'C'}; pyMOLSeq = []; cmd.iterate("sele and n. CA", "pyMOLSeq.append( one_letter[resn] )"); pyMOLSeq = ''.join( pyMOLSeq ); print "\\nSequence:\\n%s" % (pyMOLSeq)
+
+#custom commands by longxing
+alias sphere, show spheres,sele; useRosettaRadii
