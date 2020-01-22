@@ -9,8 +9,8 @@ import sys
 set cylinder_shader_ff_workaround, 1
 
 
-sys.path.append("/Users/longxing/pymol_scripts/")
-sys.path.append("/Users/longxing/pymol_scripts/scripts")
+sys.path.append("/home/longxing/pymol_scripts/")
+sys.path.append("/home/longxing/pymol_scripts/scripts")
 
 from scripts import *
 
@@ -19,16 +19,16 @@ from scripts import *
 set cartoon_flat_sheets, 0
 ###########################################################
 
-#run /Users/longxing/pymol_scripts/scripts/all_commands.py
+#run /home/longxing/pymol_scripts/scripts/all_commands.py
 
-run /Users/longxing/pymol_scripts/scripts/tmalign.py
+run /home/longxing/pymol_scripts/scripts/tmalign.py
 
-run /Users/longxing/pymol_scripts/scripts/rawAsBfact.py
-run /Users/longxing/pymol_scripts/scripts/roeAsBfact.py
+run /home/longxing/pymol_scripts/scripts/rawAsBfact.py
+run /home/longxing/pymol_scripts/scripts/roeAsBfact.py
 
-run /Users/longxing/pymol_scripts/scripts/PDBinfo.py
+run /home/longxing/pymol_scripts/scripts/PDBinfo.py
 
-aaindex.init("/Users/longxing/pymol_scripts/scripts/aaindex")
+aaindex.init("/home/longxing/pymol_scripts/scripts/aaindex")
 
 # END COMMANDS
 _ feedback pop

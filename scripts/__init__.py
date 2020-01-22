@@ -27,6 +27,7 @@ __all__ = [
     "CavityView",
     "spectrumbar",
     "FindSeq",
+    "ShowContacts",
     ]
 
 
